@@ -1,12 +1,13 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router";
 
 class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
       messages: [
-        "fghfgh",
-        "gfhfgjghjhfjfjfj651651"],
+        "Сообщение1",
+        "Сообщение2"],
       text: ""
     };
   }
@@ -15,14 +16,21 @@ class Chat extends Component {
     this.setState({ text: text });
   }
   onSent = () => {
+    if (!this.state.text) return;
     const newMessages = [...this.state.messages, this.state.text];
     this.setState({ messages: newMessages, text: "" });
   }
+  onEnter = (event) => {
+    if (event.key === "Enter")
+      this.onSent();
+  }
   render() {
+    if (!this.props.username)
+      return (<Redirect to="/" />);
     const msg = this.state.messages.map(
       (el, index) => {
         return (
-          <div key={index}>
+          <div className="msg" key={index}>
             <p>{el}</p>
             <p><em>{this.props.username}</em></p>
           </div>
@@ -30,12 +38,16 @@ class Chat extends Component {
       }
     );
     return (
-      <div>
-        <h1> Chat </h1>
-        <input type="text" placeholder="Введите сообщение" value={this.state.text} onChange={this.onTextChange}></input>
-        <br />
-        <button onClick={this.onSent}>Отправить</button>
-        {msg}
+      <div className="main-div">
+        <h1 className="header"> Тестовое задание </h1>
+        <div className="msgbox">
+          {msg}
+        </div>
+        <div className="footer">
+          <input onKeyPress={this.onEnter} className="windowmsg" type="text" placeholder="Введите сообщение" value={this.state.text} onChange={this.onTextChange}></input>
+          <br />
+          <button className="sentbtn" onClick={this.onSent}>></button>
+        </div>
       </div>
     );
   }

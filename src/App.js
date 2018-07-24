@@ -2,26 +2,26 @@ import React, { Component } from 'react';
 import { Route, Switch } from "react-router-dom";
 import Start from "./components/Start";
 import Chat from "./components/Chat";
+import NotFound from "./components/404"
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "gjhfgjf"
+      username: ""
     };
   }
 
-  onUsernameChange = event => {
-    event.preventDefault();
-    const text = event.target.username.value;
+  onUsernameChange = text => {
     this.setState({ username: text });
 
   }
   render() {
     return (
       <Switch>
-        <Route path="/chat" component={() => <Chat username={this.state.username} />} />
-        <Route path="/" component={() => <Start onLogin={this.onUsernameChange} />} />
+        <Route exact path="/chat" component={() => <Chat username={this.state.username} />} />
+        <Route exact path="/" component={() => <Start onLogin={this.onUsernameChange} />} />
+        <Route component={NotFound} />
       </Switch>
     );
   }
